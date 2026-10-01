@@ -83,7 +83,7 @@ def sheet_cover(pdf):
         "!6a. 열접촉면 분체도장 금지 (BARE AL 마스킹): P05 상면 OS1 접촉부 Ø100 + P05 하면 전체,",
         "!     P11 전체 무처리, P04 상면 P11 접촉부 140×140.  — THERMAL CONTACT SURFACE KEEP BARE ALUMINUM",
         "7. P02+P03+P09 리벳 조립(벽 링) 및 P01/P04 가조립 체결 확인까지 제작사 범위.",
-        "!8. 장치 실측 종속 홀(OS1 4×M3·핀, 카메라 홀더)은 발주 제외 — 블랭크 납품, KETI 후가공 (SHEET 10 HOLD).",
+        "!8. 장치 실측 종속 홀(OS1·카메라 홀더)은 발주 제외 — 블랭크 납품. P01 레일 슬롯은 피치 확인(HOLD 2) 후 가공.",
     ]
     sh.box(14, 92, 232, 70, "GENERAL NOTES / 일반 주기", notes, fs=5.1, lh=5.5)
     rev = [
@@ -130,7 +130,7 @@ def sheet_ga(pdf):
         n = g.nvec(f); p = (n[0] * 150, n[1] * 150); q = (n[0] * 175, n[1] * 175)
         v.ax.annotate("", xy=v.P(*q), xytext=v.P(*p), arrowprops=dict(arrowstyle="-|>", color=BLUE, lw=0.6, mutation_scale=6))
         v.tag(n[0] * 188, n[1] * 188, f"{f} {ang}°", fs=4.6)
-    v.dim((-g.RAIL_X, g.RAIL_Y), (g.RAIL_X, g.RAIL_Y), 14, "230 (RAIL PITCH)", orient="h")
+    v.dim((-g.RAIL_X, g.RAIL_Y), (g.RAIL_X, g.RAIL_Y), 14, "230 (RAIL PITCH — HOLD 2: 확인 필요)", orient="h")
     v.dim((g.RAIL_X, -g.RAIL_Y), (g.RAIL_X, g.RAIL_Y), -30, "264", orient="v")
     v.dim((-g.SIDE, 0), (g.SIDE, 0), -60, "346.4 ACROSS CORNERS (MOLD)", orient="h")
     v.dim((-g.SIDE / 2, -150), (-g.SIDE / 2, 150), 40, "300 AF", orient="v")
@@ -153,7 +153,8 @@ def sheet_ga(pdf):
     sv.dim((-g.RAIL_Y, 0), (g.RAIL_Y, 0), -4, "264 SLOT CL", orient="h")
     sh.image("out/iso_rear.png", 292, 160, 114, 110)
     lines = ["인터페이스 / INTERFACE",
-             "• 로봇: SCOUT MINI 상부 레일 2열, 피치 230 — 이어 슬롯 4×(9×20), 슬롯 CL Y=±132",
+             "!• 로봇: 상부 레일 2열, 피치 230 (HOLD 2: 실측/위고 확인 후 P01 슬롯 가공)",
+             "  이어 슬롯 4×(9×20), 슬롯 CL Y=±132",
              "  레일 T-너트/볼트 규격 HOLD → 기본 M8 (슬롯 9 = M8 클리어런스)",
              "• 카메라: 각 면 중앙, CL 높이 Z92, 60° 간격 6면 (C1~C6)",
              "• LiDAR: OS1 하면 = Z160 (P04 + P11 라이저 25 + P05 5)",
