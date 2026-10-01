@@ -1,0 +1,28 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#fff}</style>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js"}}</script></head>
+<body><script type="module">
+import * as THREE from 'three';
+const P = JSON.parse(decodeURIComponent(location.hash.slice(1)));
+const W = P.w||1400, H = P.h||1000;
+const r = new THREE.WebGLRenderer({antialias:true, preserveDrawingBuffer:true}); r.setSize(W,H); r.setPixelRatio(1);
+r.setClearColor(0xffffff); document.body.appendChild(r.domElement);
+const scene = new THREE.Scene();
+scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+const d1 = new THREE.DirectionalLight(0xffffff, 0.9); d1.position.set(300,-400,700); scene.add(d1);
+const d2 = new THREE.DirectionalLight(0xffffff, 0.35); d2.position.set(-500,300,200); scene.add(d2);
+const data = await (await fetch('mesh.json')).json();
+for (const [name, m] of Object.entries(data)) {
+  if (P.skip && P.skip.some(s=>name.includes(s))) continue;
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(m.v, 3)); g.setIndex(m.f); g.computeVertexNormals();
+  const ghost = P.ghost && P.ghost.some(s=>name.includes(s));
+  const mat = new THREE.MeshPhongMaterial({color:new THREE.Color(...m.c), flatShading:true, side:THREE.DoubleSide, transparent:ghost, opacity:ghost?0.25:1, shininess:20});
+  const mesh = new THREE.Mesh(g, mat);
+  const off = (P.explode||{})[name]; if (off) mesh.position.set(...off);
+  scene.add(mesh);
+  if (!ghost) { const e = new THREE.LineSegments(new THREE.EdgesGeometry(g, 25), new THREE.LineBasicMaterial({color:0x222222})); if (off) e.position.set(...off); scene.add(e); }
+}
+const s = P.scale||230; const cam = new THREE.OrthographicCamera(-s*W/H, s*W/H, s, -s, -5000, 5000);
+cam.up.set(0,0,1); cam.position.set(...P.cam); cam.lookAt(...(P.target||[0,0,100])); 
+r.render(scene, cam); window.DONE = true;
+</script></body></html>

@@ -1,0 +1,9 @@
+__pycache__/
+web/node_modules/
+web/mesh.json
+out/tess.pkl
+out/t-*.png
+out/u-*.png
+out/f-*.png
+out/test.pdf
+pkg/
