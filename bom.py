@@ -72,7 +72,7 @@ pur = [
  ["CONNECTOR", "USB 3.0 A↔A 피드스루 D-size (Neutrik NAUSB3 또는 동등)", "", 1, 0, "P07 D2", ""],
  ["CONNECTOR", "D-size 블랭크 플레이트 / 12V DC 잭 D-size", "", 1, 0, "P07 D3", "선택"],
  ["CONNECTOR", "SMA 벌크헤드(F) – U.FL/IPEX 피그테일 15cm", "50Ω", 4, 0, "P07 SMA", "5G 모뎀 확정 후 (HOLD 7)"],
- ["ELECTRICAL", "SCOUT 확장 케이블: 동봉 4핀 항공 플러그 + 4C 케이블 (AWG18 ×2 + 트위스트 CAN) 1 m", "납땜 제작", 1, 0, "H1", "위고 제작 요청 중 / 불가 시 KETI 납땜"],
+ ["ELECTRICAL", "SCOUT 확장 케이블: 4핀 항공 메이팅 플러그 + 4C 케이블 (AWG18 ×2 + 트위스트 CAN) 1 m", "플러그 규격 위고 확인", 1, 0, "H1", "확보 방법 위고 문의 중 (구매 또는 KETI 납땜)"],
  ["CABLE", "Arducam 15-22pin FPC 60cm", "Arducam 정품", 2, 1, "먼 2면 카메라", "기본 30cm ×6 동봉, 60cm 별도"],
  ["ELECTRICAL", "ATO 인라인 퓨즈홀더 AWG16~18 + ATO 5A 퓨즈", "", 1, 2, "24V 인입", "퓨즈 예비 2"],
  ["ELECTRICAL", "WAGO 221-413 레버 커넥터", "3P", 4, 2, "24V/GND 분배", ""],
@@ -102,7 +102,7 @@ t = r0 + 1 + len(pur)
 ws2.cell(t, 2, "합계").font = Font(name=F, bold=True); ws2.cell(t, 10, f"=SUM(J{r0+1}:J{t-1})").font = Font(name=F, bold=True); ws2.cell(t, 10).number_format = "#,##0"
 
 hold = [
- [1, "SCOUT 4핀 항공 플러그 모델", "동봉 플러그에 케이블 납땜 → M16 글랜드 통과", "없음", "위고/KETI", ""],
+ [1, "SCOUT 4핀 항공 메이팅 플러그 규격", "위고 문의 → 플러그+케이블 확보 후 M16 글랜드 통과", "없음", "위고/KETI", ""],
  [2, "레일 피치 230 / 홈 폭 / T-너트", "매뉴얼 5.2 도면·실측·위고 회신으로 확정", "P01 슬롯 가공 전 필수", "KETI", ""],
  [3, "OS1 4×M3 + Ø2 핀 패턴", "보유 OS1 실측/템플릿 → P05 후가공", "P05 블랭크 납품", "KETI", ""],
  [4, "B0473 홀더 홀/렌즈 위치", "납품 키트 실측 → P06 후가공", "P06 블랭크 납품", "KETI", ""],

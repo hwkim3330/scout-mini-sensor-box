@@ -348,7 +348,7 @@ def sheet_layout(pdf):
 # ---------------- SHEET 9 : harness / hold / inspection / RFQ ----------------
 def sheet_hold(pdf):
     sh = Sheet("HARNESS / HOLD RELEASE / INSPECTION / RFQ", 10, TOTAL, part=dict(no="ASSY-SBOX-R9", name="HARNESS / HOLD / INSPECTION", mat="—", qty="—", scale="—"))
-    rows = [["H1", "SCOUT 4-pin", "C5 M16 gland", "동봉 4핀 항공 플러그 + 4C 케이블", "24V + CAN", "납땜 제작(위고 요청/KETI), 셸 가공 불요"],
+    rows = [["H1", "SCOUT 4-pin", "C5 M16 gland", "4핀 항공 메이팅 플러그 + 4C 케이블", "24V + CAN", "확보 방법 위고 문의 중, 셸 가공 불요"],
             ["H2", "H1 24V", "FUSE 5A → WAGO", "AWG18 R/B", "24V 분배", "퓨즈는 인입 직후"],
             ["H3", "WAGO", "DC/DC IN", "AWG18", "컨버터 입력", ""],
             ["H4", "DC/DC 12V", "AGX J41", "5.5/2.5 배럴 AWG18", "AGX 전원", "센터 +, 극성 확인"],
@@ -361,7 +361,7 @@ def sheet_hold(pdf):
             ["H11", "C5 D1/D2", "AGX RJ45/USB", "패널 피드스루", "서비스", "작업용 연장"],
             ["H12", "C5 SMA ×4", "5G 모뎀", "SMA-IPEX 15cm", "안테나", "모뎀 확정 후"]]
     y = sh.table(14, 270, [("ID", 10), ("FROM", 28), ("TO", 32), ("CABLE", 36), ("FUNC", 22), ("NOTE", 68)], rows, fs=4.4, rh=4.0)
-    hold = [["1", "SCOUT 4핀 항공 플러그 모델", "동봉 플러그에 케이블 납땜 → M16 글랜드 통과 (위고 제작 문의 중)", "본체 발주 무관"],
+    hold = [["1", "SCOUT 4핀 항공 플러그 모델", "메이팅 플러그+케이블 확보(위고 문의) → M16 글랜드 통과", "본체 발주 무관"],
             ["2", "!레일 피치 230 / 홈 폭 / T-너트", "매뉴얼 5.2 도면 또는 실측·위고 회신 → P01 슬롯 위치 확정, 볼트 선정", "!P01 슬롯 가공 전 필수"],
             ["3", "OS1 4×M3 + 핀 패턴", "보유 OS1 실측/템플릿 → P05 KETI 후가공", "P05 블랭크 납품"],
             ["4", "B0473 홀더 홀 / 렌즈 위치", "납품 키트 실측 → P06 KETI 후가공", "P06 블랭크 납품"],
