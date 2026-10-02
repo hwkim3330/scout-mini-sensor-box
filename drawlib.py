@@ -4,9 +4,19 @@ import matplotlib.pyplot as plt
 from matplotlib import font_manager as fm
 from matplotlib.patches import Polygon as MPoly, Circle, FancyArrowPatch, Rectangle
 from shapely.geometry import MultiPolygon, Polygon, LineString
-fm.fontManager.addfont("/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc")
-plt.rcParams["font.family"] = ["Noto Sans CJK JP"]
-plt.rcParams["font.sans-serif"] = ["Noto Sans CJK JP"]
+# Hangul-capable font: Noto Sans CJK (Linux), Apple SD Gothic Neo (macOS), Malgun Gothic (Windows)
+CJK_FONTS = [("/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc", "Noto Sans CJK JP"),
+             ("/System/Library/Fonts/AppleSDGothicNeo.ttc", "Apple SD Gothic Neo"),
+             ("C:/Windows/Fonts/malgun.ttf", "Malgun Gothic")]
+for path, name in CJK_FONTS:
+    try:
+        fm.fontManager.addfont(path)
+    except (FileNotFoundError, RuntimeError):
+        continue
+    plt.rcParams["font.family"] = plt.rcParams["font.sans-serif"] = [name]
+    break
+else:
+    print("warning: no Hangul font found; Korean text in the drawings will not render")
 PT = 1 / 0.3528          # pt per mm
 LW_O, LW_T, LW_C = 0.5 * PT, 0.18 * PT, 0.13 * PT
 FS = 6.0                  # default text pt

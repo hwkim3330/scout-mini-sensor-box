@@ -1,0 +1,7 @@
+cadquery>=2.4
+shapely>=2.0
+ezdxf>=1.1
+matplotlib>=3.8
+openpyxl>=3.1
+numpy
+# optional, only for shoot.py (three.js renders): playwright, then `playwright install chromium`
