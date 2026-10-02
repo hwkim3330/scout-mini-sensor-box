@@ -14,6 +14,7 @@ Single-source parametric CAD for a hexagonal sheet-metal box that sits on an Agi
 - Walls are two bent halves (C1–C3, C4–C6) joined by splice brackets, so each half fits a standard press brake.
 - Self-clinching (PEM) fasteners throughout; bend allowances use Ri 2.0 / K 0.40, and the vendor re-flattens with their own bend deduction before cutting.
 - Vents on C1/C3/C4/C6 for the AGX airflow, rear service panel on C5, removable electrical plate (P10).
+- Sources for the mounting, power and thermal decisions are in [REFERENCES.md](REFERENCES.md).
 - Items that depend on measuring real hardware (camera holder holes, OS1 pin pattern, rail slot pitch, DC/DC spec) are marked **HOLD**: those parts are delivered blank and finished in-house.
 
 | Part | Name | Material / t |
