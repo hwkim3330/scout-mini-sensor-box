@@ -1,4 +1,6 @@
-# REV10-P: 3D-printed variant (design brief, not started)
+# REV10-P: 3D-printed variant (design brief)
+
+> **2026-10-27 update:** the first version is built as **flat panels assembled into a hexagon** in PLA, not a round one-piece PETG body. The cameras and rails haven't been measured yet, and a one-piece body would be a 15–20 hour print where any failure loses the whole thing. Flat panels print in about 2 hours each and only the affected part needs reprinting. See [README.md](README.md); the table below is the original brief.
 
 REV9 (the hexagonal sheet-metal box in this repo) stays as it is. REV10-P is the same sensor box redesigned to be
 printed on a **Bambu Lab A1** (256 x 256 x 256 mm bed) in **PETG**. This file is the hand-over: decisions already made,
