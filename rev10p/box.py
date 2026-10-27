@@ -8,8 +8,8 @@ lets the compute module's heat out.
 Hexagon: side L = 120 mm -> 240 mm across corners (fits the bed in one piece), 208 mm across flats,
 130 mm tall. Contents checked in code: Jetson AGX Orin dev kit 110 x 110 x 72 on the floor.
 
-HOLD (placeholders until measured): camera hole and the camera's own screw pattern (CAM_HOLE_D, the
-plate is the only part to reprint), rail pitch and slot (RAIL_X, RAIL_SLOT; the bars have long slots).
+Camera measured (see the camera block); HOLD until measured: rail pitch and slot (RAIL_X, RAIL_SLOT; the
+bars have long slots).
 
 Screws: M3 self-tapping (pan head) panel -> post and plate -> panel, M3 floor -> post from below,
 M4 bolt + nut floor <-> rail bar, rail bar -> robot rail with M5 slider nuts.
@@ -45,12 +45,23 @@ PILOT_DEPTH = 9.0
 Z_A = (15.0, 63.0, 111.0)         # screw heights on a panel's +x edge
 Z_B = (27.0, 75.0, 99.0)          # and on its -x edge (staggered so the two holes in a post never meet)
 
-# --- camera (REV9 values; HOLD for the real camera) ---
+# --- camera (measured 2026-10-27 on the user's camera) ---
+# A red holder 40.16 x 35.03 x 3.51 with a clear housing 31.74 (w) x 30.25 (h) that stands 10.9 mm proud
+# of it, four M2 holes in the red border right beside the clear part. Caliper inside jaws across the
+# holes read 31.90 x 26.8; the holes have to sit outside the clear part, so that is the near-edge gap
+# -> centres 34.1 x 29.0 (with a ~2.2 mm hole). The red holder sits in the wall window (wall 4 > 3.51),
+# the clear part goes through the outer camera plate, M2 x 6 screws from outside into the red holder.
 CAM_Z = 92.0              # camera centre above the bottom of the box
-CAM_WIN = (36.0, 36.0)    # window in the wall behind the plate
+RED = (40.16, 35.03, 3.51)
+CLEAR = (31.74, 30.25, 10.9)
+CAM_WIN = (RED[0] + 0.8, RED[1] + 0.8)        # window in the wall for the red holder
 CAM_PLATE = (60.0, 55.0, 3.0)
-CAM_SCREWS = [(sx * 24.0, sz * 22.0) for sx in (-1, 1) for sz in (-1, 1)]
-CAM_HOLE_D = 30.0         # HOLD: hole the camera's clear housing passes through
+CAM_SCREWS = [(sx * 24.0, sz * 22.0) for sx in (-1, 1) for sz in (-1, 1)]   # plate -> panel, M3
+CAM_CUT = (CLEAR[0] + 0.6, CLEAR[1] + 0.6)    # plate opening for the clear part (small corner radius:
+CAM_CUT_R = 1.0                               # the clear part's own corners are rounder)
+M2_PITCH = (31.90 + 2.2, 26.8 + 2.2)
+M2_HOLES = [(sx * M2_PITCH[0] / 2, sz * M2_PITCH[1] / 2) for sx in (-1, 1) for sz in (-1, 1)]
+M2_CLEAR = 2.4
 
 # --- vents (low, intake; the open top is the exhaust) ---
 VENT_W, VENT_H, VENT_PITCH, VENT_Z = 5.0, 26.0, 10.0, 22.0
@@ -103,7 +114,8 @@ def panel():
     bb = p.val().BoundingBox()
     p = p.translate((0, -bb.ymin, -bb.zmin))
     cz = CAM_Z - FLOOR_T
-    p = p.cut(cq.Workplane("XY").center(0, cz).rect(*CAM_WIN).extrude(T + 2).translate((0, 0, -1)))
+    p = p.cut(cq.Workplane("XY").center(0, cz).rect(*CAM_WIN).extrude(T + 2).translate((0, 0, -1))
+              .edges("|Z").fillet(1.0))
     for sx, sz in CAM_SCREWS:
         p = p.cut(cyl_z(sx, cz + sz, -1, T + 2, PILOT))
     for x, y in edge_holes():
@@ -179,7 +191,17 @@ def cam_plate():
     w, h, t = CAM_PLATE
     p = cq.Workplane("XY").box(w, h, t, centered=(True, True, False)).edges("|Z").fillet(4)
     p = p.cut(cq.Workplane("XY").pushPoints(CAM_SCREWS).circle(CLEAR3 / 2).extrude(t))
-    return p.cut(cq.Workplane("XY").circle(CAM_HOLE_D / 2).extrude(t))
+    p = p.cut(cq.Workplane("XY").rect(*CAM_CUT).extrude(t).edges("|Z").fillet(CAM_CUT_R))
+    return p.cut(cq.Workplane("XY").pushPoints(M2_HOLES).circle(M2_CLEAR / 2).extrude(t))
+
+
+def window_coupon():
+    """A 66 x 61 piece of wall with the camera window and plate screws: print it with one camera plate
+    to test-fit the camera before printing the panels."""
+    w, h = CAM_PLATE[0] + 6, CAM_PLATE[1] + 6
+    c = cq.Workplane("XY").box(w, h, T, centered=(True, True, False))
+    c = c.cut(cq.Workplane("XY").rect(*CAM_WIN).extrude(T).edges("|Z").fillet(1.0))
+    return c.cut(cq.Workplane("XY").pushPoints(CAM_SCREWS).circle(PILOT / 2).extrude(T))
 
 
 def to_mesh(wp):
@@ -243,6 +265,9 @@ def build():
     c3 = cm.copy()
     c3.apply_translation([128, 128, 0])
     parts["cam_plate"] = c3
+    w = to_mesh(window_coupon())
+    w.apply_translation([128, 128, 0])
+    parts["window_coupon"] = w
     return parts, assy
 
 
