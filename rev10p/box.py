@@ -57,8 +57,7 @@ CLEAR = (31.74, 30.25, 10.9)
 CAM_WIN = (RED[0] + 0.8, RED[1] + 0.8)        # window in the wall for the red holder
 CAM_PLATE = (60.0, 55.0, 3.0)
 CAM_SCREWS = [(sx * 24.0, sz * 22.0) for sx in (-1, 1) for sz in (-1, 1)]   # plate -> panel, M3
-CAM_CUT = (CLEAR[0] + 0.6, CLEAR[1] + 0.6)    # plate opening for the clear part (small corner radius:
-CAM_CUT_R = 1.0                               # the clear part's own corners are rounder)
+CAM_CUT = (CLEAR[0] + 0.6, CLEAR[1] + 0.6)    # plate opening for the clear part, square corners
 M2_PITCH = (31.90 + 2.2, 26.8 + 2.2)
 M2_HOLES = [(sx * M2_PITCH[0] / 2, sz * M2_PITCH[1] / 2) for sx in (-1, 1) for sz in (-1, 1)]
 M2_CLEAR = 2.4
@@ -191,7 +190,7 @@ def cam_plate():
     w, h, t = CAM_PLATE
     p = cq.Workplane("XY").box(w, h, t, centered=(True, True, False)).edges("|Z").fillet(4)
     p = p.cut(cq.Workplane("XY").pushPoints(CAM_SCREWS).circle(CLEAR3 / 2).extrude(t))
-    p = p.cut(cq.Workplane("XY").rect(*CAM_CUT).extrude(t).edges("|Z").fillet(CAM_CUT_R))
+    p = p.cut(cq.Workplane("XY").rect(*CAM_CUT).extrude(t))      # square corners: the camera fits as is
     return p.cut(cq.Workplane("XY").pushPoints(M2_HOLES).circle(M2_CLEAR / 2).extrude(t))
 
 
